@@ -1,12 +1,12 @@
 <template>
   <div id="writeArticle">
-    <el-row type="flex" justify="center">
-      <el-col :md="4">
-        <el-menu default-active="1" class="left-menu">
+    <el-row type="flex" justify="left">
+      <el-col :md="4" :offset="4">
+        <el-menu default-active="1" class="left-menu isFixed">
           <el-menu-item index="1">
             <template slot="title">
               <i class="el-icon-edit"></i>
-              <span>写文章呀</span>
+              <span>写文章呀&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
             </template>
           </el-menu-item>
           <el-menu-item index="2">
@@ -39,7 +39,27 @@
       <mavon-editor ref=md v-model="editor" style="height: 100%" 
       @change="articleChange" @save="articleSave" @imgAdd="imgAdd" @imgDel="imgDel">
       </mavon-editor>
-      <br>
+      <br><br>
+      <p>所属分类：</p>
+      <el-cascader
+        :options="options"
+        @change="optionChange"
+        v-model="selectedOptions">
+      </el-cascader>
+      <!-- <el-row>
+        <el-col :md="24">
+          <el-radio-group v-model="classification">
+            <el-radio :label="101">前端</el-radio>
+            <el-radio :label="102">后端</el-radio>
+            <el-radio :label="103">数据库</el-radio>
+            <el-radio :label="104">运维</el-radio>
+            <el-radio :label="105">算法</el-radio>
+            <el-radio :label="106">奇技淫巧</el-radio>
+            <el-radio :label="200">杂谈</el-radio>
+          </el-radio-group>
+        </el-col>
+      </el-row> -->
+      <br><br>
       <p>文章权限：</p>
       <el-row>
         <el-col :md="24">
@@ -60,16 +80,21 @@
           </el-radio-group>
         </el-col>
       </el-row>
-      <br>
-      <br>
+      <br><br>
       <el-row>
         <el-col :md="24">
           <el-button v-on:click="addArticle()" type="primary">发布文章<i class="el-icon-upload el-icon--right"></i></el-button>
           <el-button v-on:click="backToIndex()" type="info" plain>废弃<i class="el-icon-delete el-icon--right"></i></el-button>
         </el-col>
       </el-row>
-      <br>
+      <br><br>
     </el-col></el-row>
+
+    <div class="pannel" v-if="isLogin">
+      <div class="pannel-inner">
+        老铁，不<span>登陆</span>不给写～
+      </div>
+    </div>
   </div>
 </template>
 
@@ -90,10 +115,54 @@ export default {
       status: 1,
       isup: 1,
       tempString: ``,
-      loading: ""
+      loading: "",
+      isLogin: "",
+      classification: 200,
+      options: [
+        {
+          value: 100,
+          label: "技术",
+          children: [
+            {
+              value: 101,
+              label: "前端"
+            },
+            {
+              value: 102,
+              label: "后端"
+            },
+            {
+              value: 103,
+              label: "数据库"
+            },
+            {
+              value: 104,
+              label: "运维"
+            },
+            {
+              value: 105,
+              label: "算法"
+            },
+            {
+              value: 106,
+              label: "奇技淫巧"
+            }
+          ]
+        },
+        {
+          value: 200,
+          label: "随笔"
+        }
+      ],
+      selectedOptions: [200]
     };
   },
   methods: {
+    optionChange(value) {
+      // console.log(this.classification);
+      this.classification = value[value.length - 1];
+      // console.log(this.classification);
+    },
     addArticle: function() {
       this.loading = this.$loading({
         lock: true,
@@ -105,19 +174,20 @@ export default {
       if (this.articleId === -1) {
         this.postArticle(res => {
           this.loading.close();
-          console.log(res.data.data);
+          console.log(res);
           this.articleId = res.data.data;
           this.afterAdd();
         });
       } else {
         this.patchArticle(res => {
+          console.log(res);
           this.loading.close();
           this.afterAdd();
         });
       }
     },
     backToIndex: function() {
-      this.$router.push("/we/index");
+      this.$router.push("/index");
     },
     afterAdd: function() {
       this.$confirm("保存成功，您可以点击返回首页或者查看新写的文章哦~ ", "", {
@@ -126,10 +196,11 @@ export default {
         center: true
       })
         .then(() => {
-          this.$router.push("/we/viewArticle/" + this.articleId);
+          this.$store.set("articleId", this.articleId);
+          this.$router.push("/viewArticle");
         })
         .catch(() => {
-          this.$router.push("/we/index");
+          this.$router.push("/index");
         });
     },
     articleChange: function(value, render) {
@@ -164,7 +235,7 @@ export default {
             this.HOST + "/article",
             Qs.stringify({
               name: this.title,
-              classification: 1,
+              classification: this.classification,
               authorId: 1,
               articleContent: "",
               status: this.status,
@@ -194,7 +265,7 @@ export default {
           }
         })
         .then(res => {
-          this.$refs.md.$img2Url(pos,res.data.data);
+          this.$refs.md.$img2Url(pos, res.data.data);
         })
         .catch(error => {});
     },
@@ -209,7 +280,7 @@ export default {
           this.HOST + "/article",
           Qs.stringify({
             name: this.title,
-            classification: 1,
+            classification: this.classification,
             authorId: 1,
             articleContent: this.tempString,
             status: this.status,
@@ -227,7 +298,7 @@ export default {
           this.HOST + "/article",
           Qs.stringify({
             name: this.title,
-            classification: 1,
+            classification: this.classification,
             authorId: 1,
             articleContent: this.tempString,
             status: this.status,
@@ -242,19 +313,19 @@ export default {
     }
   },
   created: function() {
-    // this.$axios.get(this.HOST + "/article", {})
-    //   .then(res => {
-    //     console.log(res.data);
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //   })
-    // console.log(this.title);
+    //本地存储，设置顶部导航栏以及url信息
+    this.$store.set("state", "2");
+    this.$store.set("lastUrl", "/writeArticle");
+    console.log(this.$store.get("userStatus"));
+    if (this.$store.get("userStatus") != 1) {
+      this.isLogin = true;
+      document.getElementsByTagName("body")[0].style = "overflow: hidden;";
+    }
   }
 };
 </script>
 
-<style>
+<style scoped>
 #writeArticle {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -265,5 +336,32 @@ export default {
 }
 .left-menu {
   margin-right: 20%;
+}
+.pannel {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1500;
+  background-color: rgba(255, 255, 255, 1);
+}
+.pannel-inner {
+  position: absolute;
+  /* background-color: black; */
+  left: 40%;
+  top: 30%;
+  width: 20%;
+  /* border: solid #409eff 1px; */
+  padding: 0 17px 17px 17px;
+  font-size: 18px;
+}
+.isFixed {
+  position: fixed;
+  border: 1px solid rgba(128, 128, 128, 0.15);
+  /* padding-right: 27px; */
+  /* border: 0; */
+  z-index: 1500;
+  background-color: rgb(255, 255, 255);
 }
 </style>

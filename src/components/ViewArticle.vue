@@ -20,15 +20,19 @@ export default {
     return {
       article: {},
       defaultData: "preview",
-      articleId: this.$route.params.articleId
+      articleId: ''
     };
   },
   methods: {
     getArticle: function() {}
   },
   created: function() {
+    //本地存储，设置顶部导航栏以及url信息
+    // this.$store.set("state","1");
+    this.$store.set("lastUrl","/viewArticle");
+
     this.$axios
-      .get(this.HOST + "/article?id=" + this.articleId)
+      .get(this.HOST + "/article?id=" + this.$store.get("articleId"))
       .then(res => {
         this.article = res.data.data;
       })
@@ -39,7 +43,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 #viewArticle {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

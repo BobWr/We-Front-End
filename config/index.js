@@ -12,19 +12,19 @@ module.exports = {
     assetsPublicPath: '/',
     // 解决跨域问题
     proxyTable: {
-      "/api":{
-        target:"http://we.baojk.cn:9999/we/api/v1",
-        // target:"http://localhost:9999/we/api/v1",
-        changeOrigin:true,
-        pathRewrite:{
-          "^/api":""
-        }
-      }
+      // "/api":{
+      //   target:"http://we.baojk.cn:9998/we/api/v1",
+      //   // target:"http://localhost:9998/we/api/v1",
+      //   changeOrigin:true,
+      //   pathRewrite:{
+      //     "^/api":""
+      //   }
+      // }
     },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
-    port: 9991, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+    port: 9999, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
     notifyOnErrors: true,
@@ -49,19 +49,6 @@ module.exports = {
   build: {
     // Template for index.html
     index: path.resolve(__dirname, '../dist/index.html'),
-
-    // 解决跨域问题
-    proxyTable: {
-      "/api":{
-        target:"http://we.baojk.cn:9999/we/api/v1",
-        // target:"http://localhost:9999/we/api/v1",
-        changeOrigin:true,
-        pathRewrite:{
-          "^/api":""
-        }
-      }
-    },
-
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',

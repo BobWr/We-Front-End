@@ -1,12 +1,150 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>we</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-  </body>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="shortcut icon" type="image/x-icon" href="./static/icon.png" />
+  <title>WE</title>
+</head>
+
+<body>
+  <div id="app"></div>
+  <!-- built files will be auto injected -->
+
+  <div id="secret">
+
+  </div>
+</body>
+
+<script>
+  window.onload = function () {
+
+    // var app = navigator.appVersion;
+    // alert(app);
+
+    var system = {};
+    var p = navigator.platform;
+    var u = navigator.userAgent;
+
+    system.win = p.indexOf("Win") == 0;
+    system.mac = p.indexOf("Mac") == 0;
+    system.x11 = (p == "X11") || (p.indexOf("Linux") == 0);
+    if (!(system.win || system.mac || system.xll)) {//如果是PC转
+      // alert("请移步PC端!");
+      window.location.href = "./static/error.html";
+    }
+    // move();
+    var interval = setInterval("move()", 18);
+    var interval_img = setInterval("changeImage()", 5000);
+
+    document.getElementById("secret").onmouseover = function () {
+      clearInterval(interval);
+      clearInterval(interval_img);
+    }
+
+    document.getElementById("secret").onmouseout = function () {
+      interval = setInterval("move()", 18);
+      interval_img = setInterval("changeImage()", 5000);
+    }
+  }
+
+  var x_dir = 1;
+  var y_dir = 1;
+  var speed = 1;
+
+  var secret = document.getElementById("secret");
+
+  function move() {
+
+    // console.log(window.innerWidth + "x" + window.innerHeight);
+    var windowWidth = window.innerWidth;
+    var windowHeight = window.innerHeight;
+    // console.log(secret.style.left + "x" + secret.style.top);
+
+    //此时向右
+    if (x_dir == 1) {
+
+      //即将撞墙
+      if (Number(secret.style.left.replace("px", "")) + speed > windowWidth - 100) {
+        secret.style.left = windowWidth - 100 + "px";
+        x_dir = 0;
+      }
+      //没撞墙
+      else {
+        secret.style.left = Number(secret.style.left.replace("px", "")) + speed + "px";
+      }
+    }
+    //此时向左
+    else {
+      //即将撞墙
+      if (Number(secret.style.left.replace("px", "")) - speed < 0) {
+        secret.style.left = "0px";
+        x_dir = 1;
+      }
+      //没撞墙
+      else {
+        secret.style.left = Number(secret.style.left.replace("px", "")) - speed + "px";
+      }
+    }
+
+    //此时向下
+    if (y_dir == 1) {
+      //即将撞墙
+      if (Number(secret.style.top.replace("px", "")) + speed > windowHeight - 100) {
+        secret.style.top = windowHeight - 100 + "px";
+        y_dir = 0;
+      }
+      //没撞墙
+      else {
+        secret.style.top = Number(secret.style.top.replace("px", "")) + speed + "px";
+      }
+    }
+    //此时向上
+    else {
+      //即将撞墙
+      if (Number(secret.style.top.replace("px", "")) - speed < 0) {
+        secret.style.top = "0px";
+        y_dir = 1;
+      }
+      //没撞墙
+      else {
+        secret.style.top = Number(secret.style.top.replace("px", "")) - speed + "px";
+      }
+    }
+  }
+
+  var backImg = 1;
+  function changeImage() {
+    backImg + 1 > 11 ? backImg = 1 : backImg++;
+    secret.style.backgroundImage = "url('http://img2we.baojk.cn:9990/" + backImg + ".jpg')";
+    console.log("url('http://img2we.baojk.cn:9990/" + backImg + ".jpg')");
+  }
+</script>
+
+<style>
+  /* 秘密通道 */
+  #secret {
+    /*fixed使位置不随着窗口滚动而变化*/
+    position: fixed;
+    background-color: #40a0ff00;
+    /*border-radius切出圆*/
+    border-radius: 50px;
+    height: 100px;
+    width: 100px;
+    left: 0px;
+    top: 0px;
+    /*浮于最上层*/
+    z-index: 10000;
+    /*背景图片占满div*/
+    background-image: url("http://img2we.baojk.cn:9990/1.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    /*阴影*/
+    box-shadow: -20px 20px 10px #88888846;
+    cursor: pointer;
+  }
+</style>
+
 </html>
