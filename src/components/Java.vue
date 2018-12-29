@@ -1,17 +1,7 @@
 <template>
     <div id="Index">
         <el-row><el-col :span="12" :offset="4">
-        <el-form ref="form" :model="form" label-width="0"><el-form-item label="">
-            <el-checkbox-group v-model="form.type">
-                <el-checkbox label="前端" name="type"></el-checkbox>
-                <el-checkbox label="后端" name="type"></el-checkbox>
-                <el-checkbox label="数据库" name="type"></el-checkbox>
-                <el-checkbox label="运维" name="type"></el-checkbox>
-                <!-- <el-checkbox label="算法" name="type"></el-checkbox> -->
-                <el-checkbox label="奇技淫巧" name="type"></el-checkbox>
-            </el-checkbox-group>
-        </el-form-item></el-form>
-        <div v-if="posts.length == 0" style="color: rgba(0, 0, 0, 0.5);">你还没有选择想看的文章类型，尝试从上面选一些吧～</div>
+        <div v-if="posts.length == 0" style="color: rgba(0, 0, 0, 0.5);"></div>
         <div v-for="(post,index) in posts" 
         v-if="index >= (currentPage-1)*pageSize && index < currentPage*pageSize" v-bind:key="post.value">
             <a href="javascript:void(0)" v-on:click="cardDetail(post.id)"><el-card class="articleCard" shadow="hover">
@@ -44,7 +34,7 @@ export default {
       pageSize: "",
       articleId: 1,
       form: {
-        type: []
+        type: ["Java"]
       }
     };
   },
@@ -94,8 +84,8 @@ export default {
   },
   created: function() {
     //本地存储，设置顶部导航栏以及url信息
-    this.$store.set("state", "3");
-    this.$store.set("lastUrl", "/tech");
+    this.$store.set("state", "6");
+    this.$store.set("lastUrl", "/java");
     this.state = this.$store.get("state");
 
     this.select();

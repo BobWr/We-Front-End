@@ -11,13 +11,15 @@ import ViewArticle from './components/ViewArticle'
 import Index from './components/Index'
 import Tech from './components/Tech'
 import Essay from './components/Essay'
+import Alg from './components/Algorithm'
+import Java from './components/Java'
 import Store from './store'
 
 Vue.use(ElementUI)
 Vue.use(VueRouter)
 Vue.prototype.$axios = Axios;
-// Vue.prototype.HOST = "http://39.105.16.182:9998/we/api/v1";
-Vue.prototype.HOST = "http://localhost:9998/we/api/v1";
+Vue.prototype.HOST = "http://39.105.16.182:9998/we/api/v1";
+// Vue.prototype.HOST = "http://localhost:9998/we/api/v1";
 
 Vue.prototype.$store = Store
 
@@ -33,7 +35,9 @@ const router = new VueRouter({
     { path: '/viewArticle', component: ViewArticle },
     { path: '/index', component: Index },
     { path: '/tech', component: Tech },
-    { path: '/essay', component: Essay }
+    { path: '/essay', component: Essay },
+    { path: '/alg', component: Alg },
+    { path: '/java', component: Java }
   ]
 })
 

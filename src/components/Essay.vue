@@ -83,9 +83,10 @@ export default {
     }
   },
   created: function() {
+    // console.log("eaasy");
     //本地存储，设置顶部导航栏以及url信息
-    this.$store.set("state", "3");
-    this.$store.set("lastUrl", "/tech");
+    this.$store.set("state", "4");
+    this.$store.set("lastUrl", "/essay");
     this.state = this.$store.get("state");
 
     this.select();

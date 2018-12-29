@@ -140,10 +140,6 @@ export default {
               label: "运维"
             },
             {
-              value: 105,
-              label: "算法"
-            },
-            {
               value: 106,
               label: "奇技淫巧"
             }
@@ -152,6 +148,14 @@ export default {
         {
           value: 200,
           label: "随笔"
+        },
+        {
+          value: 300,
+          label: "算法"
+        },
+        {
+          value: 400,
+          label: "Java"
         }
       ],
       selectedOptions: [200]

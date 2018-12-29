@@ -14,7 +14,13 @@
           <el-menu-item class="menu-font" v-on:click="jump(1)" index="1">首页</el-menu-item>
         </el-col>
         <el-col :span="2">
-          <el-menu-item class="menu-font" v-on:click="jump(3)" index="3">技术</el-menu-item>
+          <el-menu-item class="menu-font" v-on:click="jump(3)" index="3">Web</el-menu-item>
+        </el-col>
+        <el-col :span="2">
+          <el-menu-item class="menu-font" v-on:click="jump(5)" index="5">算法</el-menu-item>
+        </el-col>
+        <el-col :span="2">
+          <el-menu-item class="menu-font" v-on:click="jump(6)" index="6">Java</el-menu-item>
         </el-col>
         <el-col :span="2">
           <el-menu-item class="menu-font" v-on:click="jump(4)" index="4">随笔</el-menu-item>
@@ -22,12 +28,12 @@
         <el-col :span="2">
           <el-menu-item class="menu-font" v-on:click="jump(2)" index="2">Write</el-menu-item>
         </el-col>
-        <el-col :span="2" :offset="10" class="center-y" v-if="!user_status">
+        <el-col :span="2" :offset="6" class="center-y" v-if="!user_status">
           <span class="log-span">
             <span class="log-span-inner" v-on:click="sign_in">登陆</span>/<span class="log-span-inner" v-on:click="sign_up">注册</span>
           </span>
         </el-col>
-        <el-col :span="1" :offset="11" class="center-y" v-if="user_status">
+        <el-col :span="1" :offset="7" class="center-y" v-if="user_status">
           <div v-if="userWinShow" v-on:mouseover="viewUser" v-on:mouseout="hideUser" id="userWin">
             <el-button type="text" v-on:click="logout" style="color :grey;">退出</el-button>
           </div>
@@ -130,6 +136,10 @@ export default {
         this.$router.push("/tech");
       } else if (view == 4) {
         this.$router.push("/essay");
+      } else if (view == 5) {
+        this.$router.push("/alg");
+      } else if (view == 6) {
+        this.$router.push("/java");
       }
     },
     sign_in() {
@@ -266,6 +276,8 @@ export default {
     }
   },
   created: function() {
+
+    // this.$store.del("lastUrl");
     // this.$store.set("token", "ss");
     if (this.$store.get("userStatus") == 1) {
       this.user_status = true;
